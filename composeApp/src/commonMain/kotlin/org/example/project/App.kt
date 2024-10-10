@@ -22,7 +22,7 @@ fun App() {
         val viewModel = viewModel(modelClass = ExpenseViewModel::class) {
             ExpenseViewModel(ExpenseRepoImpl(ExpenseManager))
         }
-        val uiState by viewModel.uIState.collectAsStateWithLifecycle()
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         AppTheme {
             ExpensesScreen(
                 uiState = uiState,

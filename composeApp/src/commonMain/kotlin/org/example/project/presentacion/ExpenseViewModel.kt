@@ -18,7 +18,7 @@ data class ExpenseUiState(
 class ExpenseViewModel(private val repo: ExpenseRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ExpenseUiState())
-    val uIState = _uiState.asStateFlow()
+    val uiState = _uiState.asStateFlow()
     private val allExpense = repo.getAllExpenses()
 
     init {
