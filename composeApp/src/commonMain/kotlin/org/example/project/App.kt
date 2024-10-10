@@ -1,43 +1,40 @@
 package org.example.project
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.painterResource
+
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-import kotlinproject.composeapp.generated.resources.Res
-import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import moe.tlaster.precompose.PreComposeApp
+import moe.tlaster.precompose.flow.collectAsStateWithLifecycle
+import moe.tlaster.precompose.viewmodel.viewModel
+import org.example.project.data.ExpenseManager
+import org.example.project.data.ExpenseRepoImpl
+import org.example.project.presentacion.ExpenseUiState
+import org.example.project.presentacion.ExpenseViewModel
+import org.example.project.ui.ExpensesScreen
 
 @Composable
 @Preview
 fun App() {
     PreComposeApp {
-        MaterialTheme {
+        val colors = getColorsTheme()
+        val viewModel = viewModel(modelClass = ExpenseViewModel::class) {
+            ExpenseViewModel(ExpenseRepoImpl(ExpenseManager))
+        }
+        val uiState by viewModel.uIState.collectAsStateWithLifecycle()
+        AppTheme {
+            ExpensesScreen(
+                uiState = uiState,
+                onExpenseClick = { })
+            /**
             var showContent by remember { mutableStateOf(false) }
             Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Button(onClick = { showContent = !showContent }) {
-                    Text("Click me!")
-                }
-                AnimatedVisibility(showContent) {
-                    val greeting = remember { Greeting().greet() }
-                    Column(
-                        Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Image(painterResource(Res.drawable.compose_multiplatform), null)
-                        Text("Compose: $greeting")
-                    }
-                }
+            Button(onClick = { showContent = !showContent }) {
+            Text("Click me!")
             }
+            }
+             **/
         }
     }
 }
