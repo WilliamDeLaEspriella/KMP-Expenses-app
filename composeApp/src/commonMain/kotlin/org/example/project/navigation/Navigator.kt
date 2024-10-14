@@ -12,7 +12,9 @@ import moe.tlaster.precompose.viewmodel.viewModel
 import org.example.project.data.ExpenseManager
 import org.example.project.data.ExpenseRepoImpl
 import org.example.project.getColorsTheme
+import org.example.project.model.Expense
 import org.example.project.presentacion.ExpenseViewModel
+import org.example.project.ui.ExpensesDetailScreen
 import org.example.project.ui.ExpensesScreen
 
 @Composable
@@ -33,9 +35,19 @@ fun Navigation(navigator: Navigator) {
                 navigator.navigate("/addExpenses/${expense.id}")
             }
         }
-        scene(route = "/addExpenses/{ids}"){ backStackEntry ->
+        scene(route = "/addExpenses/{id}?") { backStackEntry ->
             val idFromPath = backStackEntry.path<Long>("id")
+            val expenseToEditOrAdd = idFromPath?.let { id -> viewModel.getExpenseWhitId(id) }
 
+            ExpensesDetailScreen(expenseToEdit = expenseToEditOrAdd) { expense ->
+                if (expenseToEditOrAdd == null) {
+                    viewModel.addExpense(expense)
+                } else {
+                    viewModel.editExpense(expense)
+
+                }
+                navigator.popBackStack()
+            }
         }
     }
     //val uiState by viewModel.uIState.collectAsStateWithLifecycle()
